@@ -1,0 +1,7 @@
+# virtual env
+env/**
+
+#config files
+.env
+.flaskenv
+makefile
