@@ -1,0 +1,10 @@
+env/
+**/__pycache__/*
+.vscode
+
+.env
+.flaskenv
+makefile
+
+#design-branch
+database/initial.drawio
