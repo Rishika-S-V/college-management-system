@@ -1,0 +1,20 @@
+fonts:
+    Title: "Roboto Slab",
+    Login: "Radley",
+    Roles_name: "Roboto Slab",
+    Username: "Sanchez",
+    Password: "Sanchez",
+    remember_me: "Saira",
+    login_button: "Francois One"
+
+colours:                                                                            
+    Login_box: "292B5A",
+    Roles_Cicle: "32E6FF",
+    Roles_Circle_selected: "9DD761",
+    Login_button: "B6DADF",
+    peach_blob: "FAEBDD",
+    light_blue_blob: "D4EDF4",
+    pink_blob: "ECB8C4",
+    baby_pink_blob: "FED3D3"
+
+
