@@ -5,6 +5,10 @@ env/
 .env
 .flaskenv
 makefile
+main.py
+*.sqlite
+*.database
+*ipynb
 
 #design-branch
 database/initial.drawio
