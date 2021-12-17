@@ -1,0 +1,5 @@
+from os import environ as env
+
+SQLALCHEMY_DATABASE_URI = env.get('SQLALCHEMY_DATABASE_URI')
+SECRET_KEY = env.get('SECRET_KEY')
+SQLALCHEMY_TRACK_MODIFICATIONS = False
