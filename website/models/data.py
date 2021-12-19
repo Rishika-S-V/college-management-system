@@ -139,9 +139,11 @@ class Admin(db.Model):
 
     # Foreign Key
     staff_id = Column(Integer, ForeignKey("staff.id"), nullable=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
 
     # Relationships
     staff: Staff = relationship("Staff", back_populates="admin")
+    user: User = relationship("User")
 
     @overload
     def __init__(self, staff: Staff) -> None:
@@ -177,6 +179,7 @@ class Staff(db.Model):
     m_name = Column(Text, nullable=True)
     l_name = Column(Text)
     staff_id = Column(Text)
+    m_no = Column(Text)
     date_of_joining = Column(Date)
     is_admin = Column(Boolean)
     is_active_staff = Column(Boolean)
@@ -185,12 +188,14 @@ class Staff(db.Model):
     dept_id = Column(Integer, ForeignKey("department.id"))
     desig_id = Column(Integer, ForeignKey("designation.id"))
     blood_grp_id = Column(Integer, ForeignKey("blood_group.id"))
+    user_id = Column(Integer, ForeignKey("user.id"))
 
     # Relationships
     dept: Department = relationship("Department", back_populates="staffs")
     designation: Designation = relationship("Designation", back_populates="staffs")
     blood_grp: BloodGroup = relationship("BloodGroup", back_populates="staffs")
     admin: Admin = relationship("Admin", back_populates="staff", uselist=False)
+    user: User = relationship("User")
 
     def __init__(
         self,
@@ -198,6 +203,7 @@ class Staff(db.Model):
         l_name: str,
         staff_id: str,
         date_of_joining: date,
+        m_no: str,
         is_active_staff: Optional[bool] = True,
         is_admin: Optional[bool] = False,
         m_name: Optional[str] = None,
@@ -206,6 +212,7 @@ class Staff(db.Model):
         self.m_name = m_name
         self.l_name = l_name
         self.staff_id = staff_id
+        self.m_no = m_no
         self.date_of_joining = date_of_joining
         self.is_admin = is_admin
         self.is_active_staff = is_active_staff
@@ -230,6 +237,7 @@ class Student(db.Model):
     library_id = Column(Text, unique=True, nullable=True)
     dob = Column(Date)
     regulation = Column(Integer)
+    m_no = Column(Text)
     is_active_stud = Column(Boolean)
     is_lateral_entry = Column(Boolean)
     is_alumni = Column(Boolean)
@@ -237,10 +245,12 @@ class Student(db.Model):
     # Foreign Keys
     dept_id = Column(Integer, ForeignKey("department.id"))
     blood_grp_id = Column(Integer, ForeignKey("blood_group.id"))
+    user_id = Column(Integer, ForeignKey("user.id"))
 
     # Relationships
     dept: Department = relationship("Department", back_populates="students")
     blood_grp: BloodGroup = relationship("BloodGroup", back_populates="students")
+    user: User = relationship("User")
     parents: List[Parent] = relationship(
         "Parent", secondary="parent_students", back_populates="children"
     )
@@ -252,6 +262,7 @@ class Student(db.Model):
         batch: int,
         dob: date,
         regulation: int,
+        m_no: str,
         is_active_stud: Optional[bool] = True,
         is_lateral_entry: Optional[bool] = False,
         is_alumni: Optional[bool] = False,
@@ -267,6 +278,7 @@ class Student(db.Model):
         self.library_id = library_id
         self.dob = dob
         self.regulation = regulation
+        self.m_no = m_no
         self.is_active_stud = is_active_stud
         self.is_lateral_entry = is_lateral_entry
         self.is_alumni = is_alumni
@@ -284,15 +296,21 @@ class Parent(db.Model):
 
     f_name = Column(Text)
     l_name = Column(Text)
+    m_no = Column(Text)
+
+    # Foreign Key
+    user_id = Column(Integer, ForeignKey("user.id"))
 
     # Relationships
+    user: User = relationship("User")
     children: List[Student] = relationship(
         "Student", secondary="parent_students", back_populates="parents"
     )
 
-    def __init__(self, f_name: str, l_name: str) -> None:
+    def __init__(self, f_name: str, l_name: str, m_no: str) -> None:
         self.f_name = f_name
         self.l_name = l_name
+        self.m_no = m_no
 
     def __repr__(self) -> str:
         return f"<Parent: {self.f_name} {self.l_name}>"
@@ -313,9 +331,6 @@ class User(db.Model, UserMixin):
     password = Column(Text)
     last_active = Column(DateTime)
 
-    # Foreign Keys
-    data_id = Column(Integer)  # refers to the data
-
     # Relationship
     roles: List[Role] = relationship(
         "Role", secondary="user_roles", back_populates="users"
@@ -327,4 +342,4 @@ class User(db.Model, UserMixin):
         self.password = password
 
     def __repr__(self) -> str:
-        return f"<User: {self.u_name} [{[role.role_name for role in self.roles]}]>"
+        return f"<User: {self.u_name} {[role.role_name for role in self.roles]}>"
