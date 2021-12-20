@@ -9,3 +9,5 @@ from .data import (
     Parent,
     User,
 )
+
+from .subject import Subject

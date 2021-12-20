@@ -3,14 +3,17 @@ from __future__ import annotations
 from flask_login import UserMixin
 
 from sqlalchemy import Column, Integer, Text, Date, DateTime, Boolean, ForeignKey
-from sqlalchemy.orm import relation, relationship
+from sqlalchemy.orm import relationship
 
 from ..extensions import db
 
 # TypeHints
-from typing import List, Optional, Union, overload
+from typing import List, Optional, Union, overload, TYPE_CHECKING
 from flask_sqlalchemy import BaseQuery
 from datetime import date
+
+if TYPE_CHECKING:
+    from . import Subject
 
 
 """ASSOCIATION TABLES"""
@@ -55,6 +58,11 @@ class Department(db.Model):
     # Relationships
     students: List[Student] = relationship("Student", back_populates="dept")
     staffs: List[Staff] = relationship("Staff", back_populates="dept")
+
+    # External Relationships
+    subjects: List[Subject] = relationship(
+        "SubjectDepartment", back_populates="department"
+    )
 
     def __init__(self, full_name: str, short_name: str) -> None:
         self.full_name = full_name
@@ -196,6 +204,9 @@ class Staff(db.Model):
     blood_grp: BloodGroup = relationship("BloodGroup", back_populates="staffs")
     admin: Admin = relationship("Admin", back_populates="staff", uselist=False)
     user: User = relationship("User")
+    subjects_handling: List[Subject] = relationship(
+        "Subject", secondary="subject_staff", back_populates="staffs"
+    )
 
     def __init__(
         self,
