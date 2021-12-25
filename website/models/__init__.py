@@ -11,3 +11,4 @@ from .data import (
 )
 
 from .subject import Subject
+from .classes import Class

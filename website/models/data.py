@@ -13,7 +13,7 @@ from flask_sqlalchemy import BaseQuery
 from datetime import date
 
 if TYPE_CHECKING:
-    from . import Subject
+    from . import Subject, Class
 
 
 """ASSOCIATION TABLES"""
@@ -63,6 +63,7 @@ class Department(db.Model):
     subjects: List[Subject] = relationship(
         "SubjectDepartment", back_populates="department"
     )
+    classes: List[Class] = relationship("Class", back_populates="department")
 
     def __init__(self, full_name: str, short_name: str) -> None:
         self.full_name = full_name
@@ -189,6 +190,7 @@ class Staff(db.Model):
     staff_id = Column(Text)
     m_no = Column(Text)
     date_of_joining = Column(Date)
+    is_cc = Column(Boolean)
     is_admin = Column(Boolean)
     is_active_staff = Column(Boolean)
 
@@ -207,6 +209,7 @@ class Staff(db.Model):
     subjects_handling: List[Subject] = relationship(
         "Subject", secondary="subject_staff", back_populates="staffs"
     )
+    classes_as_cc: List[Class] = relationship("ClassCc", back_populates="cc")
 
     def __init__(
         self,
@@ -215,6 +218,7 @@ class Staff(db.Model):
         staff_id: str,
         date_of_joining: date,
         m_no: str,
+        is_cc: Optional[bool] = False,
         is_active_staff: Optional[bool] = True,
         is_admin: Optional[bool] = False,
         m_name: Optional[str] = None,
@@ -225,6 +229,7 @@ class Staff(db.Model):
         self.staff_id = staff_id
         self.m_no = m_no
         self.date_of_joining = date_of_joining
+        self.is_cc = is_cc
         self.is_admin = is_admin
         self.is_active_staff = is_active_staff
 
@@ -249,22 +254,27 @@ class Student(db.Model):
     dob = Column(Date)
     regulation = Column(Integer)
     m_no = Column(Text)
+    is_rep = Column(Boolean)
     is_active_stud = Column(Boolean)
     is_lateral_entry = Column(Boolean)
     is_alumni = Column(Boolean)
 
     # Foreign Keys
     dept_id = Column(Integer, ForeignKey("department.id"))
+    class_id = Column(Integer, ForeignKey("class.id"))
     blood_grp_id = Column(Integer, ForeignKey("blood_group.id"))
     user_id = Column(Integer, ForeignKey("user.id"))
 
     # Relationships
     dept: Department = relationship("Department", back_populates="students")
+    class_: Class = relationship("Class", back_populates="students") 
     blood_grp: BloodGroup = relationship("BloodGroup", back_populates="students")
     user: User = relationship("User")
     parents: List[Parent] = relationship(
         "Parent", secondary="parent_students", back_populates="children"
     )
+    
+    class_as_rep: List[Class] = relationship("ClassRep", back_populates="rep")
 
     def __init__(
         self,
@@ -274,6 +284,7 @@ class Student(db.Model):
         dob: date,
         regulation: int,
         m_no: str,
+        is_rep: Optional[bool] = False,
         is_active_stud: Optional[bool] = True,
         is_lateral_entry: Optional[bool] = False,
         is_alumni: Optional[bool] = False,
@@ -290,6 +301,7 @@ class Student(db.Model):
         self.dob = dob
         self.regulation = regulation
         self.m_no = m_no
+        self.is_rep = is_rep
         self.is_active_stud = is_active_stud
         self.is_lateral_entry = is_lateral_entry
         self.is_alumni = is_alumni
