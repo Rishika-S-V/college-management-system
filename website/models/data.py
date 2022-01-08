@@ -63,7 +63,9 @@ class Department(db.Model):
     subjects: List[Subject] = relationship(
         "SubjectDepartment", back_populates="department"
     )
-    classes: List[Class] = relationship("Class", back_populates="department")
+    classes: List[Class] = relationship(
+        "Class", secondary="class_dept", back_populates="departments"
+    )
 
     def __init__(self, full_name: str, short_name: str) -> None:
         self.full_name = full_name
@@ -267,13 +269,13 @@ class Student(db.Model):
 
     # Relationships
     dept: Department = relationship("Department", back_populates="students")
-    class_: Class = relationship("Class", back_populates="students") 
+    class_: Class = relationship("Class", back_populates="students")
     blood_grp: BloodGroup = relationship("BloodGroup", back_populates="students")
     user: User = relationship("User")
     parents: List[Parent] = relationship(
         "Parent", secondary="parent_students", back_populates="children"
     )
-    
+
     class_as_rep: List[Class] = relationship("ClassRep", back_populates="rep")
 
     def __init__(
