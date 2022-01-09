@@ -83,10 +83,7 @@ class Subject(db.Model):
     def __repr__(self) -> str:
         return f"<Subject: {self.sub_code} - {self.fullname if len(self.full_name) < 5 else self.short_name}>"
 
-    @classmethod
-    def add_sub(cls, sub: Subject, department: Department, semester: int):
+    def add_sub(self, department: Department, semester: int) -> None:
         association = SubjectDepartment(semester=semester)
-        association.subject = sub
-        department.subjects.append(association)
-
-        return association
+        association.department = department
+        self.departments.append(association)
