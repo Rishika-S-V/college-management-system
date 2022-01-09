@@ -399,4 +399,12 @@ class User(db.Model, UserMixin):
         self.password = password
 
     def __repr__(self) -> str:
-        return f"<User: {self.u_name} {[role.role_name for role in self.roles]}>"
+        return f"<User: {self.u_name} - {'/'.join([role.role_name for role in self.roles])}>"
+
+    def get_data(self) -> Union[Admin, Staff, Student, Parent]:
+        stud = db.session.query(Student).join(User, Student.user_id == self.id).all()
+        staff = db.session.query(Staff).join(User, Staff.user_id == self.id).all()
+        admin = db.session.query(Admin).join(User, Admin.user_id == self.id).all()
+        parent = db.session.query(Parent).join(User, Parent.user_id == self.id).all()
+        data = [j for i in (stud, staff, admin, parent) for j in i]
+        return data[0]
