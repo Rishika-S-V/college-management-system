@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from flask_login import UserMixin
 
-from sqlalchemy import Column, Integer, Text, Date, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, Text, Date, DateTime, Boolean, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from ..extensions import db
@@ -17,18 +17,6 @@ if TYPE_CHECKING:
 
 
 """ASSOCIATION TABLES"""
-
-
-class UserRoles(db.Model):
-    __tablename__ = "user_roles"
-
-    query: BaseQuery
-
-    id = Column(Integer, primary_key=True)
-
-    # Foreign Key
-    user_id = Column(Integer, ForeignKey("user.id"))
-    role_id = Column(Integer, ForeignKey("role.id"))
 
 
 class ParentStudents(db.Model):
@@ -124,7 +112,7 @@ class Role(db.Model):
 
     # Relationships
     users: List[User] = relationship(
-        "User", secondary="user_roles", back_populates="roles"
+        "User", back_populates="role"
     )
 
     def __init__(self, role_name: str) -> None:
@@ -186,11 +174,13 @@ class Admin(db.Model):
     user: User = relationship("User")
 
     @overload
-    def __init__(self, staff: Staff) -> None:
+    def __init__(self, staff: Staff, user: User) -> None:
         ...
 
     @overload
-    def __init__(self, f_name: str, l_name: str, m_name: Optional[str]) -> None:
+    def __init__(
+        self, f_name: str, l_name: str, user: User, m_name: Optional[str]
+    ) -> None:
         ...
 
     def __init__(self, **kwargs: Union[str, Staff]) -> None:
@@ -199,6 +189,7 @@ class Admin(db.Model):
         self.l_name = kwargs.get("l_name")
         self.staff = kwargs.get("staff")
         self.is_staff = False if kwargs.get("staff") == None else True
+        self.user = kwargs.get("user")
 
     def __repr__(self) -> str:
         if self.is_staff is True:
@@ -248,8 +239,12 @@ class Staff(db.Model):
         f_name: str,
         l_name: str,
         staff_id: str,
+        dept: Department,
+        designation: Designation,
         date_of_joining: date,
         m_no: str,
+        blood_grp: BloodGroup,
+        user: User,
         is_cc: Optional[bool] = False,
         is_active_staff: Optional[bool] = True,
         is_admin: Optional[bool] = False,
@@ -259,11 +254,15 @@ class Staff(db.Model):
         self.m_name = m_name
         self.l_name = l_name
         self.staff_id = staff_id
+        self.dept = dept
+        self.designation = designation
+        self.blood_grp = blood_grp
         self.m_no = m_no
         self.date_of_joining = date_of_joining
         self.is_cc = is_cc
         self.is_admin = is_admin
         self.is_active_staff = is_active_staff
+        self.user = user
 
     def __repr__(self) -> str:
         return f"<Staff: {self.f_name} {self.l_name}, {self.dept.short_name} - {self.designation.short_name}>"
@@ -318,9 +317,13 @@ class Student(db.Model):
         dob: date,
         regulation: int,
         m_no: str,
+        dept: Department,
+        blood_group: BloodGroup,
+        class_: Class,
+        user: User,
+        is_lateral_entry: Optional[bool] = False,
         is_rep: Optional[bool] = False,
         is_active_stud: Optional[bool] = True,
-        is_lateral_entry: Optional[bool] = False,
         is_alumni: Optional[bool] = False,
         m_name: Optional[str] = None,
         roll_no: Optional[int] = None,
@@ -334,11 +337,15 @@ class Student(db.Model):
         self.library_id = library_id
         self.dob = dob
         self.regulation = regulation
+        self.dept = dept
+        self.blood_grp = blood_group
+        self.class_ = class_
         self.m_no = m_no
         self.is_rep = is_rep
         self.is_active_stud = is_active_stud
         self.is_lateral_entry = is_lateral_entry
         self.is_alumni = is_alumni
+        self.user = user
 
     def __repr__(self) -> str:
         return f"<Student: {self.f_name} {self.l_name}, {self.dept.short_name}>"
@@ -352,6 +359,7 @@ class Parent(db.Model):
     id = Column(Integer, primary_key=True)
 
     f_name = Column(Text)
+    m_name = Column(Text)
     l_name = Column(Text)
     m_no = Column(Text)
 
@@ -364,10 +372,19 @@ class Parent(db.Model):
         "Student", secondary="parent_students", back_populates="parents"
     )
 
-    def __init__(self, f_name: str, l_name: str, m_no: str) -> None:
+    def __init__(
+        self,
+        f_name: str,
+        l_name: str,
+        m_no: str,
+        user: User,
+        m_name: Optional[str] = None,
+    ) -> None:
         self.f_name = f_name
+        self.m_name = m_name
         self.l_name = l_name
         self.m_no = m_no
+        self.user = user
 
     def __repr__(self) -> str:
         return f"<Parent: {self.f_name} {self.l_name}>"
@@ -383,23 +400,29 @@ class User(db.Model, UserMixin):
 
     id = Column(Integer, primary_key=True)
 
-    u_name = Column(Text, unique=True)
-    email = Column(Text, unique=True)
+    u_name = Column(Text)
+    email = Column(Text)
     password = Column(Text)
     last_active = Column(DateTime)
 
-    # Relationship
-    roles: List[Role] = relationship(
-        "Role", secondary="user_roles", back_populates="users"
-    )
+    # Foreign Key
+    role_id = Column(Integer, ForeignKey("role.id"))
 
-    def __init__(self, u_name: str, email: str, password: str) -> None:
+    __table_args__ = (UniqueConstraint(u_name, email, role_id),)
+
+    # Relationship
+    role: Role = relationship("Role", back_populates="users")
+
+    def __init__(
+        self, u_name: str, email: str, password: str, role: Role
+    ) -> None:
         self.u_name = u_name
         self.email = email
         self.password = password
+        self.role = role
 
     def __repr__(self) -> str:
-        return f"<User: {self.u_name} - {'/'.join([role.role_name for role in self.roles])}>"
+        return f"<User: {self.u_name} - {self.role.role_name}>"
 
     def get_data(self) -> Union[Admin, Staff, Student, Parent]:
         stud = db.session.query(Student).join(User, Student.user_id == self.id).all()
