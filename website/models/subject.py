@@ -10,7 +10,7 @@ from flask_sqlalchemy import BaseQuery
 from typing import List, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from . import Staff, Department
+    from . import Staff, Department, Log
 
 """Association Tables"""
 
@@ -48,6 +48,8 @@ class SubjectStaff(db.Model):
     staff_id = Column(Integer, ForeignKey("staff.id"))
 
 
+"""DATA TABLES"""
+
 class Subject(db.Model):
     __tablename__ = "subject"
 
@@ -67,6 +69,7 @@ class Subject(db.Model):
     staffs: List[Staff] = relationship(
         "Staff", secondary="subject_staff", back_populates="subjects_handling"
     )
+    logs:List[Log] = relationship("Log", back_populates="subject")
 
     def __init__(
         self, sub_code: str, full_name: str, short_name: str, regulation: int

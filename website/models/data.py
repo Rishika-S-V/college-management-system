@@ -13,7 +13,7 @@ from flask_sqlalchemy import BaseQuery
 from datetime import date
 
 if TYPE_CHECKING:
-    from . import Subject, Class
+    from . import Subject, Class, Log
 
 
 """ASSOCIATION TABLES"""
@@ -134,6 +134,34 @@ class Role(db.Model):
         return f"<Role: {self.role_name}>"
 
 
+class Calendar(db.Model):
+    __tablename__ = "calendar"
+
+    query: BaseQuery
+
+    id = Column(Integer, primary_key=True)
+    date_ = Column(Date, unique=True)
+    is_govt_holiday = Column(Boolean)
+    holiday_rsn = Column(Text)
+    
+    # Relationship
+    classes:List[Class] = relationship("ClassCalendar", back_populates="date_")
+    logs:List[Log] = relationship("Log", back_populates="date_")
+
+    def __init__(
+        self,
+        date_: date,
+        is_govt_holiday: Optional[bool] = False,
+        holiday_rsn: Optional[str] = None,
+    ) -> None:
+        self.date_ = date_
+        self.is_govt_holiday = is_govt_holiday
+        self.holiday_rsn = holiday_rsn
+
+    def __repr__(self) -> str:
+        return f"<Calendar: {self.date.strftime('%d-%m-%Y')} - {'Holiday' if self.is_govt_holiday == True else 'Working Day' }>"
+
+
 """PERSON TABLES"""
 
 
@@ -212,6 +240,7 @@ class Staff(db.Model):
         "Subject", secondary="subject_staff", back_populates="staffs"
     )
     classes_as_cc: List[Class] = relationship("ClassCc", back_populates="cc")
+    logs:List[Log] = relationship("Log", back_populates="staff")
 
     def __init__(
         self,
@@ -277,6 +306,7 @@ class Student(db.Model):
     )
 
     class_as_rep: List[Class] = relationship("ClassRep", back_populates="rep")
+    attendance:List[Log] = relationship("Attendance", back_populates="student")
 
     def __init__(
         self,

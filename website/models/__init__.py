@@ -3,6 +3,7 @@ from .data import (
     Designation,
     BloodGroup,
     Role,
+    Calendar,
     Admin,
     Staff,
     Student,
@@ -11,4 +12,4 @@ from .data import (
 )
 
 from .subject import Subject
-from .classes import Class
+from .classes import Class, Log
