@@ -303,25 +303,18 @@ class Log(db.Model):
 
     def add_attendance(self, present: Iterable[Student], od:Optional[Dict[str, Iterable[Student]]]=dict()):
 
-        def _add_assoc(is_present, is_od, note, stud):
-            association = Attendance(is_present=is_present, is_od=is_od, note=note)
-            association.student = stud
-            self.students.append(association)
-
         is_present, is_od, note = None, None, None
         
         for stud in self.class_.students:
             if stud in present:
                 is_present, is_od, note = True, False, None
-                _add_assoc(is_present, is_od, note, stud)
-            elif od:
+            elif stud in [stud for i in od.values() for stud in i]: # Checking if the student is in any of the od groups
                 for key, val in od.items():
                     if stud in val:
                         is_present, is_od, note = False, True, key 
-                        _add_assoc(is_present, is_od, note, stud)
-                    else:
-                        is_present, is_od, note = False, False, None
-                        _add_assoc(is_present, is_od, note, stud)
             else:
                 is_present, is_od, note = False, False, None
-                _add_assoc(is_present, is_od, note, stud)
+
+            association = Attendance(is_present=is_present, is_od=is_od, note=note)
+            association.student = stud
+            self.students.append(association)
