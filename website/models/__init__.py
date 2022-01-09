@@ -13,3 +13,4 @@ from .data import (
 
 from .subject import Subject
 from .classes import Class, Log
+from .exam import Exam

@@ -13,7 +13,7 @@ from flask_sqlalchemy import BaseQuery
 from datetime import date
 
 if TYPE_CHECKING:
-    from . import Subject, Class, Log
+    from . import Subject, Class, Log, Exam
 
 
 """ASSOCIATION TABLES"""
@@ -147,6 +147,7 @@ class Calendar(db.Model):
     # Relationship
     classes:List[Class] = relationship("ClassCalendar", back_populates="date_")
     logs:List[Log] = relationship("Log", back_populates="date_")
+    exams: List[Exam] = relationship("Exam", back_populates="date_")
 
     def __init__(
         self,
@@ -307,6 +308,7 @@ class Student(db.Model):
 
     class_as_rep: List[Class] = relationship("ClassRep", back_populates="rep")
     attendance:List[Log] = relationship("Attendance", back_populates="student")
+    exams:List[Exam] = relationship("ExamStudent", back_populates="student")
 
     def __init__(
         self,

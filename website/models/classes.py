@@ -10,7 +10,7 @@ from flask_sqlalchemy import BaseQuery
 from typing import Iterable, List, Dict, Any, TYPE_CHECKING, Optional, Tuple
 
 if TYPE_CHECKING:
-    from . import Department, Staff, Student, Calendar, Subject
+    from . import Department, Staff, Student, Calendar, Subject, Exam
     from datetime import date
 
 
@@ -186,6 +186,7 @@ class Class(db.Model):
         "Department", secondary="class_dept", back_populates="classes"
     )
     students: List[Student] = relationship("Student", back_populates="class_")
+    exams: List[Exam] = relationship("Exam", secondary="exam_class", back_populates="classes")
 
     def __init__(
         self,
