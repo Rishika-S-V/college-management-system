@@ -192,6 +192,7 @@ class Class(db.Model):
         self,
         batch: int,
         regulation: int,
+        departments: List[Department],
         current_sem: Optional[int] = 1,
         is_archived: Optional[bool] = False,
         timetable: Optional[Dict[str, Any]] = JSON.NULL,
@@ -201,6 +202,7 @@ class Class(db.Model):
         self.current_sem = current_sem
         self.is_archived = is_archived
         self.time_table = timetable
+        self.departments.extend(departments)
 
     def __repr__(self) -> str:
         return f"<Class: {self.batch} - {self.regulation} Regulation, {'/'.join([dept.short_name for dept in self.departments])}>"
@@ -220,55 +222,37 @@ class Class(db.Model):
         association.date_ = date_
         self.dates.append(association)
 
-    @classmethod
-    def add_class(
-        cls, class_: Class, cc: Staff, rep: Optional[Student]
-    ) -> Tuple[ClassCc, ClassRep]:
-        association_cc = ClassCc(semester=1)
-        association_cc.class_ = class_
+    def change_cc(self, cc: Staff, semester: int, old_cc: Optional[Staff]=None) -> None:
+        if old_cc: # remove old cc
+            old_cc.is_cc = False
+            
         cc.is_cc = True
-        cc.classes_as_cc.append(association_cc)
-
-        association_rep = ClassRep(semester=1)
-        association_rep.class_ = class_
-        rep.is_rep = True
-        rep.class_as_rep.append(association_rep)
-
-        return association_cc, association_rep
-
-    @classmethod
-    def add_cc(cls, class_: Class, cc: Staff, semester: int) -> ClassCc:
         association = ClassCc(semester=semester)
-        association.class_ = class_
-        cc.is_cc = True
-        cc.classes_as_cc.append(association)
+        association.cc = cc
+        self.cc_s.append(association)
 
-        return association
 
-    @classmethod
-    def add_rep(cls, class_: Class, rep: Student, semester: int) -> ClassRep:
-        association = ClassRep(semester=semester)
-        association.class_ = class_
+    def change_rep(self, rep: Student, semester: int, old_rep: Optional[Student]=None) -> None:
+        if old_rep: # remove old rep
+            old_rep.is_rep = False
+        
         rep.is_rep = True
-        rep.class_as_rep.append(association)
+        association = ClassRep(semester=semester)
+        association.rep = rep
+        self.reps.append(association)
 
-        return association
 
-    @classmethod
-    def split_classes(
-        cls, base_cls: Class, semester: int, *children: Class
-    ) -> Tuple[ClassInherit, ...]:
-        association: List[ClassInherit] = list()
-        base_cls.is_archived = True
+    def split_classes(self, semester: int, data: Iterable[Tuple[Class, Iterable[Student]]]) -> None:
+        self.is_archived = True
 
-        for cls in children:
+        for cls, studs in data:
+            for stud in studs:
+                stud.class_ = cls
+
             asso = ClassInherit(semester)
-            asso.parent = base_cls
-            cls.parents.append(asso)
+            asso.child_class = cls
+            self.child_classes.append(asso)
 
-            association.append(asso)
-
-        return tuple(association)
 
 
 class Log(db.Model):
