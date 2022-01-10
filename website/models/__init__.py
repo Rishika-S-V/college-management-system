@@ -9,6 +9,8 @@ from .data import (
     Student,
     Parent,
     User,
+    Notification,
+    NotificationCategory
 )
 
 from .subject import Subject

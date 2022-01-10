@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from flask_login import UserMixin
 
-from sqlalchemy import Column, Integer, Text, Date, DateTime, Boolean, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, Integer, VARCHAR, Text, Date, DateTime, Boolean, DATETIME, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from ..extensions import db
 
 # TypeHints
-from typing import List, Optional, Union, overload, TYPE_CHECKING
+from typing import Iterable, List, Tuple, Optional, Union, overload, TYPE_CHECKING
 from flask_sqlalchemy import BaseQuery
 from datetime import date
 
@@ -150,6 +151,24 @@ class Calendar(db.Model):
     def __repr__(self) -> str:
         return f"<Calendar: {self.date.strftime('%d-%m-%Y')} - {'Holiday' if self.is_govt_holiday == True else 'Working Day' }>"
 
+
+class NotificationCategory(db.Model):
+    __tablename__ = "notification_category"
+
+    query: BaseQuery
+
+    id = Column(Integer, primary_key=True)
+    category = Column(VARCHAR(20))
+
+    #Relationships
+    notifications: List[Notification] = relationship("Notification", back_populates="category")
+    
+    def __init__(self, category: str) -> None:
+        self.category = category
+        
+    def __repr__(self) -> str:
+        return f"<NotificationCategory: {self.category}>"
+        
 
 """PERSON TABLES"""
 
@@ -431,3 +450,45 @@ class User(db.Model, UserMixin):
         parent = db.session.query(Parent).join(User, Parent.user_id == self.id).all()
         data = [j for i in (stud, staff, admin, parent) for j in i]
         return data[0]
+
+
+"""NOTIFICATION TABLES"""
+
+
+class Notification(db.Model):
+    __tablename__ = "notification"
+
+    query: BaseQuery
+
+    id = Column(Integer, primary_key=True)
+    content = Column(Text)
+    timestamp = Column(DATETIME(timezone=True), default=func.now())
+    is_read = Column(Boolean, default=False)
+
+    #Foreign Keys
+    from_id = Column(Integer, ForeignKey("user.id"))
+    to_id = Column(Integer, ForeignKey("user.id"))
+    category_id = Column(Integer, ForeignKey("notification_category.id"), default=1)
+
+    #Relationships
+    
+    from_: User = relationship("User", foreign_keys=from_id)
+    to: User = relationship("User", foreign_keys=to_id)
+    category: NotificationCategory = relationship("NotificationCategory", back_populates="notifications")
+    
+    def __init__(self, from_: User, to: User, content: str, category: Optional[NotificationCategory]=None) -> None:
+        self.from_ = from_
+        self.to = to
+        self.content = content
+        if category: self.category = category
+    
+    @classmethod
+    def push_notification(cls, from_: User, to: Iterable[User], content: str, category: Optional[NotificationCategory]=None) -> Tuple[Notification]:
+        notifications: List[Notification] = list()
+        
+        for usr in to:
+            notifications.append(
+                Notification(from_, usr, content, category)
+                )
+        
+        return tuple(notifications)
