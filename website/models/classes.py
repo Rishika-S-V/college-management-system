@@ -1,17 +1,17 @@
 from __future__ import annotations
 
-from sqlalchemy import Column, Integer, Text, Boolean, JSON, ForeignKey
+from typing import TYPE_CHECKING
+
+from sqlalchemy import Column, ForeignKey, Integer, Text, Boolean, JSON
 from sqlalchemy.orm import relationship
 
 from ..extensions import db
 
-# Type Hints
-from flask_sqlalchemy import BaseQuery
-from typing import Iterable, List, Dict, Any, TYPE_CHECKING, Optional, Tuple
-
 if TYPE_CHECKING:
-    from . import Department, Staff, Student, Calendar, Subject, Exam
+    from typing import Iterable, List, Dict, Any, Optional, Tuple
+    from flask_sqlalchemy import BaseQuery
     from datetime import date
+    from . import Department, Staff, Student, Calendar, Subject, Exam
 
 
 """ASSOCIATION TABLES"""
@@ -119,6 +119,7 @@ class ClassInherit(db.Model):
     def __init__(self, semester: int) -> None:
         self.semester = semester
 
+
 class Attendance(db.Model):
     __tablename__ = "attendance"
 
@@ -146,6 +147,7 @@ class Attendance(db.Model):
         self.is_present = is_present
         self.is_od = is_od
         self.note = note
+
 
 """DATA TABLES"""
 
@@ -179,14 +181,16 @@ class Class(db.Model):
         overlaps="child_class",
     )
     dates: List[Calendar] = relationship("ClassCalendar", back_populates="class_")
-    logs:List[Log] = relationship("Log", back_populates="class_")
+    logs: List[Log] = relationship("Log", back_populates="class_")
 
     # External Relationships
     departments: List[Department] = relationship(
         "Department", secondary="class_dept", back_populates="classes"
     )
     students: List[Student] = relationship("Student", back_populates="class_")
-    exams: List[Exam] = relationship("Exam", secondary="exam_class", back_populates="classes")
+    exams: List[Exam] = relationship(
+        "Exam", secondary="exam_class", back_populates="classes"
+    )
 
     def __init__(
         self,
@@ -222,27 +226,31 @@ class Class(db.Model):
         association.date_ = date_
         self.dates.append(association)
 
-    def change_cc(self, cc: Staff, semester: int, old_cc: Optional[Staff]=None) -> None:
-        if old_cc: # remove old cc
+    def change_cc(
+        self, cc: Staff, semester: int, old_cc: Optional[Staff] = None
+    ) -> None:
+        if old_cc:  # remove old cc
             old_cc.is_cc = False
-            
+
         cc.is_cc = True
         association = ClassCc(semester=semester)
         association.cc = cc
         self.cc_s.append(association)
 
-
-    def change_rep(self, rep: Student, semester: int, old_rep: Optional[Student]=None) -> None:
-        if old_rep: # remove old rep
+    def change_rep(
+        self, rep: Student, semester: int, old_rep: Optional[Student] = None
+    ) -> None:
+        if old_rep:  # remove old rep
             old_rep.is_rep = False
-        
+
         rep.is_rep = True
         association = ClassRep(semester=semester)
         association.rep = rep
         self.reps.append(association)
 
-
-    def split_classes(self, semester: int, data: Iterable[Tuple[Class, Iterable[Student]]]) -> None:
+    def split_classes(
+        self, semester: int, data: Iterable[Tuple[Class, Iterable[Student]]]
+    ) -> None:
         self.is_archived = True
 
         for cls, studs in data:
@@ -252,7 +260,6 @@ class Class(db.Model):
             asso = ClassInherit(semester)
             asso.child_class = cls
             self.child_classes.append(asso)
-
 
 
 class Log(db.Model):
@@ -275,10 +282,18 @@ class Log(db.Model):
     subject: Subject = relationship("Subject", back_populates="logs")
     staff: Staff = relationship("Staff", back_populates="logs")
     class_: Class = relationship("Class", back_populates="logs")
-    
-    students:List[Student] = relationship("Attendance", back_populates="log")
 
-    def __init__(self, date_:Calendar, subject:Subject, staff:Staff, class_: Class, period_no: int, note: str) -> None:
+    students: List[Student] = relationship("Attendance", back_populates="log")
+
+    def __init__(
+        self,
+        date_: Calendar,
+        subject: Subject,
+        staff: Staff,
+        class_: Class,
+        period_no: int,
+        note: str,
+    ) -> None:
         self.date_ = date_
         self.subject = subject
         self.staff = staff
@@ -286,17 +301,23 @@ class Log(db.Model):
         self.period_no = period_no
         self.note = note
 
-    def add_attendance(self, present: Iterable[Student], od:Optional[Dict[str, Iterable[Student]]]=dict()):
+    def add_attendance(
+        self,
+        present: Iterable[Student],
+        od: Optional[Dict[str, Iterable[Student]]] = dict(),
+    ):
 
         is_present, is_od, note = None, None, None
-        
+
         for stud in self.class_.students:
             if stud in present:
                 is_present, is_od, note = True, False, None
-            elif stud in [stud for i in od.values() for stud in i]: # Checking if the student is in any of the od groups
+            elif stud in [
+                stud for i in od.values() for stud in i
+            ]:  # Checking if the student is in any of the od groups
                 for key, val in od.items():
                     if stud in val:
-                        is_present, is_od, note = False, True, key 
+                        is_present, is_od, note = False, True, key
             else:
                 is_present, is_od, note = False, False, None
 

@@ -1,15 +1,14 @@
 from __future__ import annotations
 
-from sqlalchemy import Column, ForeignKey, Integer, Boolean, VARCHAR
-from sqlalchemy.orm import relation, relationship
-from sqlalchemy.sql.base import NO_ARG
+from typing import TYPE_CHECKING
+
+from sqlalchemy import Column, ForeignKey, Integer, VARCHAR, Boolean
+from sqlalchemy.orm import relationship
 
 from ..extensions import db
 
-from typing import TYPE_CHECKING, Iterable, List, Tuple, Union, overload
-
 if TYPE_CHECKING:
-    from typing import Optional
+    from typing import Optional, Iterable, List, Tuple
     from flask_sqlalchemy import BaseQuery
     from . import Subject, Student, Class, Calendar
 
@@ -28,6 +27,7 @@ class ExamClass(db.Model):
     class_id = Column(Integer, ForeignKey("class.id"))
     exam_id = Column(Integer, ForeignKey("exam.id"))
 
+
 class ExamStudent(db.Model):
     __tablename__ = "exam_student"
 
@@ -39,20 +39,22 @@ class ExamStudent(db.Model):
     marks = Column(Integer)
     grade = Column(VARCHAR(3))
 
-    #Foreign Keys
+    # Foreign Keys
     student_id = Column(Integer, ForeignKey("student.id"))
     exam_id = Column(Integer, ForeignKey("exam.id"))
-    
-    #Relationships
-    student: Student = relationship("Student", back_populates="exams") 
+
+    # Relationships
+    student: Student = relationship("Student", back_populates="exams")
     exam: Exam = relationship("Exam", back_populates="students")
-    
-    def __init__(self, is_attended: bool, is_passed: bool, grade: str, marks:int) -> None:
+
+    def __init__(
+        self, is_attended: bool, is_passed: bool, grade: str, marks: int
+    ) -> None:
         self.is_attended = is_attended
         self.marks = marks
         self.grade = grade
         self.is_passed = is_passed
-        
+
 
 """Data Tables"""
 
@@ -75,11 +77,22 @@ class Exam(db.Model):
     # Relationships
     date_: Calendar = relationship("Calendar", back_populates="exams")
     subject: Subject = relationship("Subject", back_populates="exams")
-    classes: List[Class] = relationship("Class", secondary="exam_class", back_populates="exams")
-    
+    classes: List[Class] = relationship(
+        "Class", secondary="exam_class", back_populates="exams"
+    )
+
     students: List[Student] = relationship("ExamStudent", back_populates="exam")
-    
-    def __init__(self, name: str, date_:Calendar, subject:Subject, max_score: int, pass_score: int, classes:Iterable[Class], is_semester: Optional[bool]=False) -> None:
+
+    def __init__(
+        self,
+        name: str,
+        date_: Calendar,
+        subject: Subject,
+        max_score: int,
+        pass_score: int,
+        classes: Iterable[Class],
+        is_semester: Optional[bool] = False,
+    ) -> None:
         self.name = name
         self.date_ = date_
         self.subject = subject
@@ -87,18 +100,26 @@ class Exam(db.Model):
         self.pass_score = pass_score
         self.is_semester = is_semester
         self.classes.extend(classes)
-        
-    def enter_marks(self, cls:Class, data: Iterable[Tuple[Student, int, str]], failures:Iterable[students]):
-        
+
+    def enter_marks(
+        self,
+        cls: Class,
+        data: Iterable[Tuple[Student, int, str]],
+        failures: Iterable[students],
+    ):
+        """
+        data (Iterable[Tuple[Student, int, str]]): Data to be entered Should be in the format -> Iterable[Tuple[Student, mark, grade]], For grade, mark if one doesn't exist then None.
+        """
+
         def _add_marks(stud, is_attended, is_passed, marks, grade):
             association = ExamStudent(is_attended, is_passed, marks, grade)
             association.student = stud
             self.students.append(association)
-        
+
         is_attended, is_passed, marks, grade = None, None, None, None
-        
+
         students_not_attended = list(set(cls.students) - set([i[0] for i in data]))
-        
+
         for stud in students_not_attended:
             is_attended, is_passed, marks, grade = False, None, None, None
             _add_marks(stud, is_attended, is_passed, marks, grade)
@@ -108,4 +129,3 @@ class Exam(db.Model):
             is_passed = True if stud not in failures else False
             marks, grade = m, g
             _add_marks(stud, is_attended, is_passed, marks, grade)
-            

@@ -10,7 +10,7 @@ from .data import (
     Parent,
     User,
     Notification,
-    NotificationCategory
+    NotificationCategory,
 )
 
 from .subject import Subject
