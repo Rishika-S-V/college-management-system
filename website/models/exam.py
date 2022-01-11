@@ -48,7 +48,7 @@ class ExamStudent(db.Model):
     exam: Exam = relationship("Exam", back_populates="students")
 
     def __init__(
-        self, is_attended: bool, is_passed: bool, grade: str, marks: int
+        self, is_attended: bool, is_passed: bool, marks: int, grade: str
     ) -> None:
         self.is_attended = is_attended
         self.marks = marks

@@ -14,7 +14,6 @@ from sqlalchemy import (
     Date,
     DateTime,
     Boolean,
-    DATETIME,
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -433,7 +432,7 @@ class User(db.Model, UserMixin):
     u_name = Column(Text)
     email = Column(Text)
     password = Column(Text)
-    last_active = Column(DateTime)
+    last_active = Column(DateTime(timezone=True))
 
     # Foreign Key
     role_id = Column(Integer, ForeignKey("role.id"))
@@ -471,13 +470,13 @@ class Notification(db.Model):
 
     id = Column(Integer, primary_key=True)
     content = Column(Text)
-    timestamp = Column(DATETIME(timezone=True), default=func.now())
+    timestamp = Column(DateTime(timezone=True), default=func.now())
     is_read = Column(Boolean, default=False)
 
     # Foreign Keys
     from_id = Column(Integer, ForeignKey("user.id"))
     to_id = Column(Integer, ForeignKey("user.id"))
-    category_id = Column(Integer, ForeignKey("notification_category.id"), default=1)
+    category_id = Column(Integer, ForeignKey("notification_category.id"))
 
     # Relationships
 
