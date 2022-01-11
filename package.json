@@ -1,7 +1,6 @@
 {
   "name": "flask_parcel_test",
   "version": "1.0.0",
-  "description": "```python .gitkeep files are kept to make git track the directory & will be removed after adding files ```",
   "main": "index.js",
   "scripts": {
     "dev": "npx parcel ./static_src/html/*.html --no-source-maps",
