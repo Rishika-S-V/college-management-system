@@ -20,6 +20,7 @@
   "homepage": "https://github.com/naveeng2402/college-management-system#readme",
   "devDependencies": {
     "@babel/preset-env": "^7.16.8",
+    "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-uglify": "^3.0.2",
