@@ -1,7 +1,17 @@
-# virtual env
 env/**
+**/__pycache__/*
+.ipynb_checkpoints/**
+.vscode
+dist/**/*
+node_modules
 
-#config files
 .env
 .flaskenv
 makefile
+main.py
+*.sqlite
+*.database
+*ipynb
+
+#design-branch
+database/initial.drawio
