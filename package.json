@@ -1,22 +1,32 @@
 {
-  "name": "flask_parcel_test",
+  "name": "college-management-system",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "dev": "npx parcel ./static_src/html/*.html --no-source-maps",
-    "scss-watch": "npx sass --watch static_src/scss:website/static --style=compressed  --no-source-map",
-    "css-minify": "npx sass static_src/scss:website/static --style=compressed  --no-source-map",
+    "scss-watch": "npx sass --watch website/static/src/scss:website/static/dist  --no-source-map",
+    "css-minify": "npx sass website/static/src/scss:website/static/dist --style=compressed  --no-source-map",
     "js-watch": "gulp devWatch",
-    "js-minify": "gulp bundleJs"
+    "js-minify": "gulp bundleJs",
+    "svg-min": "npx svgo -r -f website/static/src/imgs website/static/dist/imgs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naveeng2402/college-management-system.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naveeng2402/college-management-system/issues"
+  },
+  "homepage": "https://github.com/naveeng2402/college-management-system#readme",
   "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.8",
     "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-uglify": "^3.0.2",
-    "parcel-bundler": "^1.12.5",
-    "sass": "^1.47.0"
+    "sass": "^1.48.0",
+    "svgo": "^2.8.0"
   }
 }
