@@ -5,7 +5,8 @@
     "scss-watch": "npx sass --watch website/static/src/scss:website/static/dist  --no-source-map",
     "css-minify": "npx sass website/static/src/scss:website/static/dist --style=compressed  --no-source-map",
     "js-watch": "gulp devWatch",
-    "js-minify": "gulp bundleJs"
+    "js-minify": "gulp bundleJs",
+    "svg-min": "npx svgo -r -f website/static/src/imgs website/static/dist/imgs"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-uglify": "^3.0.2",
-    "sass": "^1.48.0"
+    "sass": "^1.48.0",
+    "svgo": "^2.8.0"
   }
 }
