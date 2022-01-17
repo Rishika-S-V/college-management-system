@@ -2,8 +2,8 @@
   "name": "college-management-system",
   "version": "1.0.0",
   "scripts": {
-    "scss-watch": "npx sass --watch website/static/src/scss:website/static/dist  --no-source-map",
-    "css-minify": "npx sass website/static/src/scss:website/static/dist --style=compressed  --no-source-map",
+    "scss-watch": "npx sass --watch website/static/src/scss:website/static/dist/css  --no-source-map",
+    "css-minify": "npx sass website/static/src/scss:website/static/dist/css --style=compressed  --no-source-map",
     "js-watch": "gulp devWatch",
     "js-minify": "gulp bundleJs",
     "svg-min": "npx svgo -r -f website/static/src/imgs website/static/dist/imgs"
