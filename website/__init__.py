@@ -6,4 +6,4 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "<h1>HomePage.</h1>"
+    return render_template("login/admin_login.html.j2")

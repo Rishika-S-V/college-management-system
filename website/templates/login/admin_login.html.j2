@@ -1,0 +1,52 @@
+{% extends "base.html.j2" %}
+
+{% block title %}
+{% endblock title %}
+
+{% block scripts %}
+{% endblock scripts %}
+
+{% block css %}
+{% endblock css %}
+
+{% block fonts %}
+{% endblock fonts %}
+
+{% block content %}
+    <main>
+        <div class="clg-details">
+            <img src="//unsplash.it/150/150" alt="">
+            <h1>Jaya Engineering College</h1>
+        </div>
+        <div class="roles">
+            <img src="//unsplash.it/100/100" alt="admin_img"><label >Admin</label>
+        </div>
+        <form action="" class="admin_login">
+            <div class="credentials">
+                <div class="username">
+                    <label for="username_inp">Username or Email</label>
+                    <input type="text" name="username_inp" id="username_inp">
+                </div>
+                <div class="password">
+                    <label for="password_inp">Password</label>
+                    <div class="password__input">
+                        <input type="password" name="password_inp" id="password_inp">
+                        <i></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form_actions">
+                <div class="remember_me">
+                    <input type="checkbox" name="remember_me_inp" id="remember_me_inp">
+                    <i></i>
+                    <label for="remember_me_inp">Remember Me</label>
+                </div>
+                <button type="submit" class="submit_btn">Submit</button>
+            </div>
+        </form>
+    </main>
+{% endblock content %}
+
+{% block additional_scripts %}
+{% endblock additional_scripts %}
