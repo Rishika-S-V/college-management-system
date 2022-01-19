@@ -1,12 +1,17 @@
 {% extends "base.html.j2" %}
 
 {% block title %}
+JEC Portal
 {% endblock title %}
 
 {% block scripts %}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
 {% endblock scripts %}
 
 {% block css %}
+<link rel="stylesheet" href="{{url_for('static', filename='dist/css/admin_login.css')}}">
 {% endblock css %}
 
 {% block fonts %}
@@ -14,35 +19,60 @@
 
 {% block content %}
     <main>
-        <div class="clg-details">
-            <img src="//unsplash.it/150/150" alt="">
-            <h1>Jaya Engineering College</h1>
-        </div>
-        <div class="roles">
-            <img src="//unsplash.it/100/100" alt="admin_img"><label >Admin</label>
-        </div>
-        <form action="" class="admin_login">
-            <div class="credentials">
-                <div class="username">
-                    <label for="username_inp">Username or Email</label>
-                    <input type="text" name="username_inp" id="username_inp">
-                </div>
-                <div class="password">
-                    <label for="password_inp">Password</label>
-                    <div class="password__input">
-                        <input type="password" name="password_inp" id="password_inp">
-                        <i></i>
+        <section class="header">
+            <img src="{{url_for('static', filename='dist/imgs/logo.svg')}}" alt="college logo" class="header__logo">
+            <h1 class="header__name">Jaya Engineering College</h1>
+        </section>
+        <section class="role">
+            <img src="{{url_for('static', filename='dist/imgs/admin.svg')}}" alt="role illustration" class="role__image">
+            <p class="role__name">Admin</p>
+        </section>
+        <form method="post" class="admin-login-form">
+            <div class="admin-login-form__credentials">
+                <div class="credentials__input">
+                    <div class="credentials__input__field">
+                        <input type="text"
+                        class="credentials__input__field__text"
+                        name="admin-login-username-input"
+                        id="admin-login-username-input"
+                        placeholder="&nbsp;"
+                        autocomplete="on"
+                        required
+                        >
+                        <label 
+                        class="credentials__input__field__label"
+                        for="admin-login-username-input">Username or Email</label>
                     </div>
+                    <span class="credentials__input__err" id="username-err">
+                        Lorem ipsum dolor sit amet.
+                    </span>
+                </div>
+                <div class="credentials__input">
+                    <div class="credentials__input__field">
+                        <input type="password"
+                        class="credentials__input__field__text"
+                        name="admin-login-password-input"
+                        id="admin-login-password-input"
+                        placeholder="&nbsp;"
+                        autocomplete="on"
+                        required
+                        >
+                        <label
+                        class="credentials__input__field__label"
+                        for="admin-login-password-input">Password</label>
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <span class="credentials__input__err" id="password-err">
+                        Lorem ipsum dolor sit amet.
+                    </span>
                 </div>
             </div>
-            
-            <div class="form_actions">
-                <div class="remember_me">
-                    <input type="checkbox" name="remember_me_inp" id="remember_me_inp">
-                    <i></i>
-                    <label for="remember_me_inp">Remember Me</label>
+            <div class="admin-login-form__btns">
+                <div class="admin-login-form__btns__remember-me">
+                    <input type="checkbox" name="admin-login-checkbox" id="admin-login-checkbox">
+                    <label for="admin-login-checkbox">Remember me</label>
                 </div>
-                <button type="submit" class="submit_btn">Submit</button>
+                <input type="submit" value="Submit">
             </div>
         </form>
     </main>

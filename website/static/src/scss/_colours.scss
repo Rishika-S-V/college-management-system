@@ -1,7 +1,15 @@
-$accents: (
-    "primary-darker": hsl(237, 29%, 43%),
-    "primary-dark": hsl(237, 29%, 60%),
-    "primary-regular": hsl(237, 29%, 43%),
-    "primary-light": hsl(237, 29%, 43%),
-    "primary-lighter": hsl(237, 29%, 43%)
+$primary: (
+    "lighter": hsl(237, 29%, 75%),
+    "light": hsl(237, 29%, 60%),
+    "regular": hsl(237, 29%, 43%),
+    "dark": hsl(237, 29%, 30%),
+    "darker": hsl(237, 29%, 25%)
+);
+
+$neutral: (
+    "100": hsl(0, 0%, 0%),
+    "200": hsl(0, 0%, 25%),
+    "300": hsl(0, 0%, 50%),
+    "400": hsl(0, 0%, 75%),
+    "500": hsl(0, 0%, 100%)
 )
