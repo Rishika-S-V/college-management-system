@@ -1,11 +1,16 @@
 @use "reset";
-@use "colours" as c;
-@use "config" as conf;
+
+@use "abstracts/colours" as c;
+@use "abstracts/functions" as f;
+@use "abstracts/mixins" as m;
+
+@use "components/" as comp;
+
 
 main {
   height: clamp(650px, 92.5vh, 100vh);
   padding: min(3vw, 0.8rem);
-  @include conf.flex-center(column, $justify: space-between);
+  @include m.flex-center(column, $justify: space-between);
   gap: 1em;
 }
 
@@ -15,7 +20,7 @@ img {
 
 .header {
   width: 100%;
-  @include conf.flex-center(column);
+  @include m.flex-center(column);
   gap: 0.1em;
 
   &__logo {
@@ -32,13 +37,13 @@ img {
 .role {
   width: 100%;
   height: 20vh;
-  @include conf.flex-center(column);
+  @include m.flex-center(column);
   gap: 0.1em;
 
   &__image {
     width: clamp(75px, 13vh, 115px);
     box-sizing: content-box;
-    border: 0.5em solid conf.primary-clr("regular");
+    border: 0.5em solid f.primary-clr(regular);
   }
 
   &__name {
@@ -51,164 +56,32 @@ img {
 .admin-login-form {
   width: 90%;
   height: 60%;
-  @include conf.flex-center(column);
-  // border: 2px solid green;
+  @include m.flex-center(column);
 
   &__credentials {
     width: 100%;
     height: 50%;
-    @include conf.flex-center(column);
+    @include m.flex-center(column);
     gap: 1rem;
-  }
 
+    .input-text, .input-pass{
+      height: 50%;
+      cursor: text;
+    }
+  }
+  
   &__btns {
     width: 100%;
     height: 40%;
-    // border: 2px solid red;
-    @include conf.flex-center(column);
+    @include m.flex-center(column);
     gap: 1rem;
-
-    &__remember-me {
-      position: relative;
-      input {
-        position: absolute;
-        top: 0%;
-        left: 0%;
-        opacity: 0;
-
-        &:focus {
-          + label {
-            border: 0.05rem solid conf.primary-clr("lighter");
-          }
-        }
-
-        &:checked {
-          + label::before {
-            content: "\f058";
-            color: conf.primary-clr("darker");
-          }
-        }
-      }
-
-      label {
-        font-size: clamp(1.25rem, 5vw + 0.01rem, 4rem);
-        border-radius: 1rem;
-        padding: 0.25rem;
-
-        &::before {
-          @include conf.font-awesome("\f111");
-          margin-right: 1rem;
-          border-radius: 50%;
-          color: conf.primary-clr("light");
-        }
-      }
-    }
-
-    input[type="submit"] {
+    
+    .btn{
       width: 90%;
       height: 40%;
-      background-color: conf.primary-clr("regular");
-      color: #ffffff;
-      border-radius: 5rem;
-      font-size: clamp(2rem, 8vw + 0.01rem, 6rem);
-      font-weight: 500;
-      text-align: center;
-
-      &:focus {
-        box-sizing: content-box;
-        border: 0.5rem solid conf.primary-clr("darker");
-      }
-    }
+      padding: 0;
+    }  
   }
 }
 
-.credentials__input {
-  width: 100%;
-  height: 100%;
-  @include conf.flex-center(column);
-  gap: 0.2rem;
 
-  &__field {
-    $input-font-size: clamp(1.5rem, 5vw + 0.01rem, 5rem);
-    $input-border-radius: 5rem;
-
-    position: relative;
-    width: 100%;
-    height: 100%;
-    // overflow: hidden;
-    border-radius: $input-border-radius;
-    border: 0.2rem solid conf.neutral-clr("200");
-
-    &__label {
-      position: absolute;
-      width: 100%;
-      top: 50%;
-      left: 0%;
-      transform: translateY(-50%);
-      padding: 0.5em;
-      font-size: $input-font-size;
-      text-align: left;
-      color: conf.neutral-clr("200");
-      // pointer-events: none;
-      opacity: 0.75;
-      transition: all 100ms ease-in;
-    }
-
-    &__text {
-      width: 100%;
-      height: 100%;
-      outline: none;
-      padding: 0.5rem 1rem;
-      border-radius: $input-border-radius;
-      font-size: calc($input-font-size - calc($input-font-size / 5));
-
-      &[type="password"] {
-        width: 90%;
-        // border: 2px solid black;
-      }
-    }
-
-    i {
-      color: conf.neutral-clr("200");
-      position: absolute;
-      top: 50%;
-      left: 92.5%;
-      font-size: clamp(1.25rem, 5vw + 0.01rem, 3rem);
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-    }
-
-    &:focus-within {
-      border: 0.3rem solid conf.primary-clr("regular");
-      i {
-        color: conf.primary-clr("regular");
-      }
-      label {
-        color: conf.primary-clr("regular");
-      }
-      input {
-        color: conf.primary-clr("dark");
-      }
-    }
-  }
-
-  &__err {
-    color: red;
-    font-size: 0.9rem;
-    letter-spacing: 0.05rem;
-    opacity: 0;
-    transition: opacity 1000ms ease-in-out;
-  }
-}
-
-.credentials__input__field__text:focus ~ .credentials__input__field__label,
-.credentials__input__field__text:not(:placeholder-shown).credentials__input__field__text:not(:focus)
-  ~ .credentials__input__field__label {
-  top: -4.5%;
-  left: 5%;
-  text-align: left;
-  font-size: clamp(1rem, 4vw + 0.01rem, 4rem);
-  opacity: 1;
-  width: auto;
-  background-color: conf.neutral-clr("500");
-}
