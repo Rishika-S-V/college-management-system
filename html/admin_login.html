@@ -1,58 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel = "stylesheet" href = "https://use.fontawesome.com/releases/v5.7.0/css/all.css">
-    <link rel="stylesheet" href="../website/static/dist/css/admin_login.css">
-    <title> </title>
-  </head>
 
-  <body>
-    <main>
-      <div class="clg-details">
-        <img src="//unsplash.it/150/150" alt="" />
-        <h1>Jaya Engineering College</h1>
-      </div>
-      <div class="roles">
-        <img src="//unsplash.it/75/75" alt="admin_img" />
-        <label>Admin</label>
-      </div>
-      <form action="" class="admin_login">
-        <div class="credentials">
-          <div class="user_input_field">
-            <div class="user_input_field_with_label">
-                <label for="username_inp">Username or Email</label>
-                <input type="text" name="username_inp" id="username_inp" />
-            </div>
-            <span id="username-err">Lorem ipsum dolor sit amet.</span>
-        </div>
-        <div class="user_input_field">
-            <div class="user_input_field_with_label">
-                <div class="pass_input">
-                    <label for="password_inp">Password</label>
-                    <input type="password" name="password_inp" id="password_inp" />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>JEC Portal</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Francois+one&family=Roboto+Slab&family=Saira&family=Sanchez&display=swap" />
+        <link rel="stylesheet" href="../website/static/dist/css/admin_login.css" />
+    </head>
+
+    <body>
+        <main>
+            <section class="header">
+                <img src="../website/static/dist/imgs/logo.svg" alt="college logo" class="header__logo">
+                <h1 class="header__name">Jaya Engineering College</h1>
+            </section>
+            <section class="role">
+                <img src="../website/static/dist/imgs/admin.svg" alt="role illustration" class="role__image">
+                <h2 class="role__name">Admin</h2>
+            </section>
+            <form method="post" class="admin-login-form">
+                <div class="admin-login-form__credentials">
+                    <div id="admin-login-form__username-input" class="input-text input-text--focus-primary">
+                        <div class="input-text__input-label-collection">
+                            <input type="text" id="admin-login-form__username-input-field" name="admin-login-form__username-input-field" class="input-text__input-field" placeholder="&nbsp;" autocomplete="on" required>
+                            <label class="input-text__label" for="admin-login-form__username-input-field">Username or Email</label>
+                        </div>
+                        <span id="admin-login-form__username-input-err" class="input-text__err">
+                        Lorem ipsum dolor sit amet.
+                    </span>
+                    </div>
+                    <div id="admin-login-form__password-input" class="input-pass input-pass--focus-primary">
+                        <div class="input-pass__input-label-collection">
+                            <input type="password" id="admin-login-form__password-input-field" name="admin-login-form__password-input-field" class="input-pass__input-field" placeholder="&nbsp;" autocomplete="on" required>
+                            <label class="input-pass__label" for="admin-login-form__password-input-field">Password</label>
+                            <i class="fas fa-eye input-pass__eye-icon" onclick = "eye_toggle(this, event)"></i>
+                        </div>
+                        <span id="admin-login-password-input-err" class="input-pass__err">
+                        Lorem ipsum dolor sit amet.
+                    </span>
+                    </div>
                 </div>
-                <!-- <i class = "fas fa-eye"></i> -->
-            </div>
-            <span id="password-err">Lorem ipsum dolor sit amet.</span>
-        </div>
+                <div class="admin-login-form__btns">
+                    <div class="input-chk-box input-chk-box--circle-tick input-chk-box--primary">
+                        <input type="checkbox" name="admin-login-form__remember-me-check-box" id="admin-login-form__remember-me-check-box" class="input-chk-box__input-field">
+                        <label for="admin-login-form__remember-me-check-box" class="input-chk-box__label">Remember me</label>
+                    </div>
+                    <input type="submit" class="btn btn--capsule btn--primary" value="Submit">
+                </div>
+            </form>
+        </main>
+    </body>
 
-        </div>
+    <script src = "../website/static/src/js/ui/toggle.js"></script>
+    <script src = "../website/static/src/js/core/utils.js"></script>
 
-        <div class="form_actions">
-          <div class="remember_me">
-            <input
-              type="checkbox"
-              name="remember_me_inp"
-              id="remember_me_inp"
-            />
-            <i></i>
-            <label for="remember_me_inp">Remember Me</label>
-          </div>
-          <button type="submit" class="submit_btn">Submit</button>
-        </div>
-      </form>
-    </main>
-  </body>
 </html>

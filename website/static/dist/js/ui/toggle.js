@@ -1,0 +1,1 @@
+"use strict";function eye_toggle(e,s){var a=e.className,i=e.previousElementSibling.previousElementSibling;"fas fa-eye input-pass__eye-icon"==a?(e.className="fas fa-eye-slash input-pass__eye-icon",i.type="text"):"fas fa-eye-slash input-pass__eye-icon"==a&&(e.className="fas fa-eye input-pass__eye-icon",i.type="password")}

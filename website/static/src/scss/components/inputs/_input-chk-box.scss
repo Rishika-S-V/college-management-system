@@ -1,0 +1,99 @@
+@use "../../abstracts" as *;
+
+.input-chk-box {
+    $self: &;
+
+    position: relative;
+
+    &__input-field {
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        opacity: 0%;
+
+        &:checked{
+            ~ #{$self}__label::before {
+                content: "\f14a";
+            }
+        }
+    }
+
+    &__label {
+        font-size: clamp(1.25rem, 5vw + 0.01rem, 4rem);
+        border-radius: 1rem;
+        padding: 0.25rem;
+
+        &::before {
+            @include font-awesome("\f0c8");
+            margin-right: 1rem;
+            border-radius: 50%;
+        }
+    }
+
+
+    // Types
+
+    &--circle-tick {
+        #{$self}__input-field:checked {
+            ~ #{$self}__label::before {
+                content: "\f058";
+            }
+        }
+        
+        #{$self}__input-field:not(checked) {
+            ~ #{$self}__label::before {
+                content: "\f111";
+            }
+        }
+    }
+    
+    &--square-tick {
+        #{$self}__input-field:checked {
+            ~ #{$self}__label::before {
+                content: "\f14a";
+            }
+        }
+        
+        #{$self}__input-field:not(checked) {
+            ~ #{$self}__label::before {
+                content: "\f0c8";
+            }
+        }
+    }
+
+    &--dot {
+        #{$self}__input-field:checked {
+            ~ #{$self}__label::before {
+                content: "\f192";
+            }
+        }
+        
+        #{$self}__input-field:not(checked) {
+            ~ #{$self}__label::before {
+                content: "\f111";
+            }
+        }
+    }
+
+    // Check colours
+    &--primary{
+        #{$self}__input-field:checked {
+            ~ #{$self}__label::before {
+                color: primary-clr(darker);
+            }
+        }
+        
+        #{$self}__input-field:not(checked) {
+            ~ #{$self}__label::before {
+                color: primary-clr(light);
+            }
+        }
+
+        #{$self}__input-field:focus {
+            ~ #{$self}__label {
+                border: 0.05rem solid primary-clr(lighter);
+            }
+        }
+
+    }        
+}
