@@ -10,7 +10,11 @@
   &__input-label-collection {
     position: relative;
     width: 100%;
+<<<<<<< HEAD
     height: 70%;
+=======
+    height: 100%;
+>>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
     border-radius: $input-border-radius;
     border: 0.2rem solid neutral-clr(200);
   }
@@ -30,7 +34,11 @@
     top: 50%;
     left: 0%;
     transform: translateY(-50%);
+<<<<<<< HEAD
     padding: 0 0.3em 0 0.3em;
+=======
+    padding: 0.5em;
+>>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
     font-size: $input-font-size;
     text-align: left;
     color: neutral-clr(200);

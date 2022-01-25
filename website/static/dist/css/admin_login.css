@@ -44,7 +44,11 @@
 .input-text__input-label-collection, .input-pass__input-label-collection {
   position: relative;
   width: 100%;
+<<<<<<< HEAD
   height: 70%;
+=======
+  height: 100%;
+>>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
   border-radius: 200rem;
   border: 0.2rem solid #404040;
 }
@@ -62,7 +66,11 @@
   top: 50%;
   left: 0%;
   transform: translateY(-50%);
+<<<<<<< HEAD
   padding: 0 0.3em 0 0.3em;
+=======
+  padding: 0.5em;
+>>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
   font-size: clamp(1.5rem, 5vw + 0.01rem, 5rem);
   text-align: left;
   color: #404040;
@@ -85,6 +93,8 @@
 .input-text--focus-primary .input-text__input-label-collection:focus-within .input-text__label, .input-pass--focus-primary .input-text__input-label-collection:focus-within .input-text__label, .input-text--focus-primary .input-pass__input-label-collection:focus-within .input-text__label, .input-pass--focus-primary .input-pass__input-label-collection:focus-within .input-text__label, .input-text--focus-primary .input-text__input-label-collection:focus-within .input-pass__label, .input-pass--focus-primary .input-text__input-label-collection:focus-within .input-pass__label, .input-text--focus-primary .input-pass__input-label-collection:focus-within .input-pass__label, .input-pass--focus-primary .input-pass__input-label-collection:focus-within .input-pass__label {
   background-color: white;
   color: #4e518d;
+<<<<<<< HEAD
+=======
 }
 
 .input-text__input-field:focus ~ .input-text__label, .input-pass__input-field:focus ~ .input-text__label, .input-text__input-field:focus ~ .input-pass__label, .input-pass__input-field:focus ~ .input-pass__label,
@@ -174,11 +184,115 @@
   border: 0.05rem solid #adafd2;
 }
 
+main {
+  height: clamp(650px, 92.5vh, 100vh);
+  padding: min(3vw, 0.8rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+>>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
+}
+
+.input-text__input-field:focus ~ .input-text__label, .input-pass__input-field:focus ~ .input-text__label, .input-text__input-field:focus ~ .input-pass__label, .input-pass__input-field:focus ~ .input-pass__label,
+.input-text__input-field:not(:placeholder-shown).input-text__input-field:not(:focus) ~ .input-text__label,
+.input-pass__input-field:not(:placeholder-shown):not(:focus) ~ .input-text__label,
+.input-text__input-field:not(:placeholder-shown).input-text__input-field:not(:focus) ~ .input-pass__label,
+.input-pass__input-field:not(:placeholder-shown):not(:focus) ~ .input-pass__label {
+  top: -4.5%;
+  left: 5%;
+  text-align: left;
+  font-size: clamp(1rem, 4vw + 0.01rem, 4rem);
+  opacity: 1;
+  width: auto;
+  background-color: white;
+}
+
+.input-pass__input-field {
+  width: 90%;
+}
+.input-pass__eye-icon {
+  position: absolute;
+  top: 50%;
+  left: 92.5%;
+  transform: translate(-50%, -50%);
+  color: #404040;
+  font-size: clamp(1.25rem, 5vw + 0.01rem, 3rem);
+  cursor: pointer;
+}
+.input-pass--focus-primary .input-pass__input-label-collection:focus-within .input-pass__eye-icon {
+  color: #4e518d;
+}
+
+.input-chk-box {
+  position: relative;
+}
+.input-chk-box__input-field {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  opacity: 0%;
+}
+.input-chk-box__input-field:checked ~ .input-chk-box__label::before {
+  content: "\f14a";
+}
+.input-chk-box__label {
+  font-size: clamp(1.25rem, 5vw + 0.01rem, 4rem);
+  border-radius: 1rem;
+  padding: 0.25rem;
+}
+.input-chk-box__label::before {
+  content: "\f0c8";
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 1rem;
+  border-radius: 50%;
+}
+.input-chk-box--circle-tick .input-chk-box__input-field:checked ~ .input-chk-box__label::before {
+  content: "\f058";
+}
+.input-chk-box--circle-tick .input-chk-box__input-field:not(checked) ~ .input-chk-box__label::before {
+  content: "\f111";
+}
+.input-chk-box--square-tick .input-chk-box__input-field:checked ~ .input-chk-box__label::before {
+  content: "\f14a";
+}
+.input-chk-box--square-tick .input-chk-box__input-field:not(checked) ~ .input-chk-box__label::before {
+  content: "\f0c8";
+}
+.input-chk-box--dot .input-chk-box__input-field:checked ~ .input-chk-box__label::before {
+  content: "\f192";
+}
+.input-chk-box--dot .input-chk-box__input-field:not(checked) ~ .input-chk-box__label::before {
+  content: "\f111";
+}
+.input-chk-box--primary .input-chk-box__input-field:checked ~ .input-chk-box__label::before {
+  color: #2d2f52;
+}
+.input-chk-box--primary .input-chk-box__input-field:not(checked) ~ .input-chk-box__label::before {
+  color: #7b7eb7;
+}
+.input-chk-box--primary .input-chk-box__input-field:focus ~ .input-chk-box__label {
+  border: 0.05rem solid #adafd2;
+}
+
+<<<<<<< HEAD
 .input-radio-img {
+=======
+.header {
+  width: 100%;
+>>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+<<<<<<< HEAD
   gap: 0.5rem;
   padding: 0.3rem;
 }
@@ -251,10 +365,55 @@ img {
 .role {
   width: 100%;
   height: 20vh;
+=======
+  gap: 0.1em;
+}
+.header__logo {
+  width: clamp(100px, 20vh, 170px);
+}
+.header__name {
+  text-align: center;
+  font-weight: 900;
+  font-size: clamp(1rem, 6.5vw + 0.01rem, 7rem);
+}
+
+.role {
+  width: 100%;
+  height: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.1em;
+}
+.role__image {
+  width: clamp(75px, 13vh, 115px);
+  box-sizing: content-box;
+  border: 0.5em solid #4e518d;
+}
+.role__name {
+  text-align: center;
+  font-weight: 200;
+  font-size: min(5vw, 1.5rem);
+}
+
+.admin-login-form {
+  width: 90%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.admin-login-form__credentials {
+  width: 100%;
+  height: 50%;
+>>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+<<<<<<< HEAD
   gap: 0.1em;
 }
 .role__image {
@@ -291,6 +450,14 @@ img {
   height: 50%;
   cursor: text;
 }
+=======
+  gap: 1rem;
+}
+.admin-login-form__credentials .input-text, .admin-login-form__credentials .input-pass {
+  height: 50%;
+  cursor: text;
+}
+>>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
 .admin-login-form__btns {
   width: 100%;
   height: 40%;
@@ -304,8 +471,11 @@ img {
   width: 90%;
   height: 40%;
   padding: 0;
+<<<<<<< HEAD
   font-family: "Francois One", sans-serif;
 }
 .admin-login-form__label {
   font-family: "Saira", serif;
+=======
+>>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
 }
