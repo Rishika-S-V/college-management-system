@@ -1,0 +1,64 @@
+@use "../../abstracts/" as *;
+
+.input-radio-img {
+    $self: &;
+
+    @include flex-center(column);
+
+    gap: 0.5rem;
+    padding: 0.3rem;
+
+    &__radio-btn {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+
+        &:checked {
+            ~ #{$self}__img {
+                box-sizing: content-box;
+                border-width: 0.7rem;
+                border-style: solid;
+            }
+        }
+    }
+    // .input-radio__radio-btn:checked ~ .input-radio__img{
+    //   border-width: 2rem;
+    // }
+
+    &__img {
+        width: 100px;
+        border-radius: 50%;
+        border-width: 0.2rem;
+        border-style: solid;
+    }
+
+    &__label {
+        font-size: 1.6rem;
+    }
+    
+
+    &:focus-within {
+        border-width: 0.1em;
+        border-radius: 17%;
+        border-style: solid;
+    }
+    
+//         Border colours
+    
+    &--primary {
+        #{$self}__img {
+         border-color: primary-clr(regular);
+        }
+        
+        #{$self}__radio-btn:checked {
+            ~ #{$self}__img{
+                border-color : primary-clr(dark);
+            }
+        }
+        
+        &:focus-within {
+            border-color : primary-clr(light);
+        }
+        
+    } 
+}

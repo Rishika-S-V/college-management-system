@@ -1,0 +1,9 @@
+@use "./colours" as clr;
+
+@function primary-clr($clr) {
+    @return map-get(clr.$primary, $clr);
+  }
+  
+  @function neutral-clr($clr) {
+    @return map-get(clr.$neutral, $clr);
+  }
