@@ -22,7 +22,6 @@ img {
   width: 100%;
   @include m.flex-center(column);
   gap: 0.1em;
-<<<<<<< HEAD
 
   &__logo {
     width: clamp(100px, 20vh, 170px);
@@ -56,49 +55,13 @@ img {
   }
 }
 
-=======
-
-  &__logo {
-    width: clamp(100px, 20vh, 170px);
-  }
-
-  &__name {
-    text-align: center;
-    font-weight: 900;
-    font-size: clamp(1rem, 6.5vw + 0.01rem, 7rem);
-  }
-}
-
-.role {
-  width: 100%;
-  height: 20vh;
-  @include m.flex-center(column);
-  gap: 0.1em;
-
-  &__image {
-    width: clamp(75px, 13vh, 115px);
-    box-sizing: content-box;
-    border: 0.5em solid f.primary-clr(regular);
-  }
-
-  &__name {
-    text-align: center;
-    font-weight: 200;
-    font-size: min(5vw, 1.5rem);
-  }
-}
-
->>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
 .admin-login-form {
   width: 90%;
   height: 60%;
   @include m.flex-center(column);
 
   &__credentials {
-<<<<<<< HEAD
     font-family: "Sanchez", serif;
-=======
->>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
     width: 100%;
     height: 50%;
     @include m.flex-center(column);
@@ -120,17 +83,12 @@ img {
       width: 90%;
       height: 40%;
       padding: 0;
-<<<<<<< HEAD
       font-family: "Francois One", sans-serif;
     }  
   }
   &__label {
     font-family : "Saira", serif;
   }
-=======
-    }  
-  }
->>>>>>> 23f5e13962c04907a54df32634fc7893ab5a9b17
 }
 
 

@@ -1,7 +1,7 @@
 from os import environ as env
 import json
 from flask import Flask, render_template, request
-from flask_fontawesome import FontAwesome
+
 
 app = Flask(__name__)
 
