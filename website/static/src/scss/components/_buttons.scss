@@ -1,0 +1,48 @@
+@use "../abstracts" as *;
+
+
+.btn {
+    text-align: center;
+    font-size: clamp(2rem, 5vh + 0.01rem, 4rem);
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+
+    &:focus {
+        box-sizing: content-box;
+        border-width: 0.5rem;
+        border-style: solid;
+    }
+
+    
+    // button styles
+
+    &--capsule{
+        border-radius: 200rem;
+    }
+
+    &--fish-eye-right{
+        border-radius: 200rem 0rem 200rem 0rem;
+    }
+    
+    &--fish-eye-left{
+        border-radius: 0rem 200rem 0rem 200rem;
+    }
+
+    // button colours
+
+    &--primary{
+        background-color: primary-clr(regular);
+        color: neutral-clr(500);
+
+        &:focus{
+            border-color: primary-clr(darker);
+        }
+    }
+
+    &--disabled{
+        background-color: neutral-clr(400);
+        color: neutral-clr(200);
+    }
+
+
+}

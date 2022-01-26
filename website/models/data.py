@@ -77,7 +77,7 @@ class Department(db.Model):
 class Designation(db.Model):
     __tablename__ = "designation"
 
-    query: BaseException
+    query: BaseQuery
 
     id = Column(Integer, primary_key=True)
     full_name = Column(Text, unique=True)

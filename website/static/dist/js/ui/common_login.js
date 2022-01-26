@@ -1,0 +1,1 @@
+"use strict";function submit_form(e,n){n.preventDefault();n=e.querySelector("button");n.className,n.innerText;n.className="btn btn--capsule btn--disabled",n.innerText="Please Wait...";e=get_form_values(e);console.log(e),backend_api("/common/login-val",e).then(function(e){console.log(e)})}

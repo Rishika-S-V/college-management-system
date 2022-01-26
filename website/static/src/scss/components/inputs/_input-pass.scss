@@ -1,0 +1,52 @@
+@use "../../abstracts" as *;
+@use "input-text" as inp-txt;
+
+.input-pass{
+    $self: &;
+    $super: input-text;
+
+    @extend .input-text;
+
+    &__input-label-collection{
+        @extend .#{$super}__input-label-collection;
+    }
+
+    &__input-field{
+        @extend .#{$super}__input-field;
+        // border: 2px solid red;
+        width: 90%;
+    }
+
+    &__label{
+        @extend .#{$super}__label;
+    }
+
+    &__err{
+        @extend .#{$super}__err;
+    }
+
+    &__eye-icon{
+        position: absolute;
+        top: 50%;
+        left: 92.5%;
+        transform: translate(-50%, -50%);
+        color: neutral-clr(200);
+        font-size: clamp(1.25rem, 5vw + 0.01rem, 3rem);
+        cursor: pointer;
+    }
+
+    // Focus Colours
+    &--focus-primary{
+        @extend .#{$super}--focus-primary;
+
+        #{$self}__input-label-collection:focus-within{
+            #{$self}__eye-icon{
+            color: primary-clr(regular);
+           }
+        }
+    }
+}
+
+// Focus Transition
+    // Extended automatically
+
