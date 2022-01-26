@@ -1,0 +1,26 @@
+{
+  "name": "flask_parcel_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "scss-watch": "npx sass --watch website/static/src/scss:website/static/dist/css  --no-source-map",
+    "css-minify": "npx sass website/static/src/scss:website/static/dist/css --style=compressed  --no-source-map",
+    "js-watch": "gulp devWatch",
+    "js-minify": "gulp bundleJs",
+    "svg-min": "npx svgo -r -f website/static/src/imgs website/static/dist/imgs "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.8",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^3.0.2",
+    "sass": "^1.48.0",
+    "svgo": "^2.8.0"
+  }
+}

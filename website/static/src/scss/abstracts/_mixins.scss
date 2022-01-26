@@ -1,0 +1,31 @@
+@mixin flex-center($direction: row, $align: center, $justify: center) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+}
+
+@mixin font-awesome($code) {
+  content: $code;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+@mixin input-base() {
+  @include flex-center(column);
+  gap: 0.2rem;
+  cursor: text;
+}
+
+@mixin input--focus-selector($type) {
+  .input-#{$type}__input-field:focus ~ .input-#{$type}__label,
+  .input-#{$type}__input-field:not(:placeholder-shown).input-#{$type}__input-field:not(:focus)
+  ~ .input-#{$type}__label {
+    @content;
+  }
+}
